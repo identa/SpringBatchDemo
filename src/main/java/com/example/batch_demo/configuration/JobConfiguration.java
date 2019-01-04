@@ -26,10 +26,33 @@ public class JobConfiguration {
 
     @Bean
     public Step step1() {
-        return stepBuilderFactory.get("step1").tasklet(new Tasklet() {
+        return stepBuilderFactory.get("step1")
+                .tasklet(new Tasklet() {
             @Override
             public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                System.out.println("Hello world!");
+                System.out.println("This is step 1");
+                return RepeatStatus.FINISHED;
+            }
+        }).build();
+    }
+
+
+    @Bean
+    public Step step2(){
+        return stepBuilderFactory.get("step2")
+                .tasklet((stepContribution, chunkContext) -> {
+                    System.out.println("This is step 2");
+                    return RepeatStatus.FINISHED;
+                }).build();
+    }
+
+    @Bean
+    public Step step3() {
+        return stepBuilderFactory.get("step3")
+                .tasklet(new Tasklet() {
+            @Override
+            public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+                System.out.println("this is step 3");
                 return RepeatStatus.FINISHED;
             }
         }).build();
@@ -38,6 +61,10 @@ public class JobConfiguration {
     @Bean
     public Job helloWorldJob(){
         return jobBuilderFactory.get("helloWorldJob")
-                .start(step1()).build();
+                .start(step1())
+                .next(step2())
+                .next(step3())
+                .next(step2())
+                .build();
     }
 }
