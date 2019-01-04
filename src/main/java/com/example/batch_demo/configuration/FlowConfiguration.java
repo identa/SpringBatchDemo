@@ -33,13 +33,4 @@ public class FlowConfiguration {
                 }).build();
     }
 
-    @Bean
-    public Flow foo(){
-        FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("foo");
-        flowBuilder.start(step1())
-                .next(step2())
-                .end();
-
-        return flowBuilder.build();
-    }
 }
