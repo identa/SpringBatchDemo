@@ -63,7 +63,7 @@ public class JobConfiguration {
         return jobBuilderFactory.get("helloWorldJob")
                 .start(step1())
                 .on("COMPLETED").to(step2())
-                .from(step2()).on("COMPLETED").fail()
+                .from(step2()).on("COMPLETED").stopAndRestart(step3())
                 .from(step3()).end()
                 .build();
     }
